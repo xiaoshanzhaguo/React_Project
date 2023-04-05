@@ -434,7 +434,10 @@ export default App
 
 ### 10.2 路由懒加载
 
-/router/index.tsx
+/router/index.tsx  
+
+- 引入lazy函数，React，注意 `<React.Suspense fallback={<div>Loading...</div>}><About /></React.Suspense>` 的写法
+- 即懒加载的模式的组件的写法，外面需要套一层 Loading 的提示加载组件。
 
 ```tsx
 import React, { lazy } from "react"
@@ -474,5 +477,37 @@ const routes = [
 ]
 
 export default routes
+```
+
+### 10.3 抽取Loading组件函数
+
+/router/index.tsx
+
+```tsx
+...
+const withLoadingComponent = (comp: JSX.Element) => (
+    <React.Suspense fallback={<div>Loading...</div>}>
+        {comp}
+    </React.Suspense>
+)
+
+const routes = [
+    {
+        path: "/",
+        element: <Navigate to="/home" />
+    },
+    {
+        path: "/home",
+        element: <Home />
+    },
+    {
+        path: "/about",
+        element: withLoadingComponent(<About />)
+    },
+    {
+        path: "/user",
+        element: withLoadingComponent(<User />)
+    }
+]
 ```
 
