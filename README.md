@@ -174,7 +174,7 @@ export default App
 
 antd的4.x版本以上已经支持组件按需引入，我们只需要解决样式上的自动按需引入即可。
 
-安装插件vite-plugin-style-import
+安装插件vite-plugin-style-import（使用这个插件后，就不需要在App.tsx中引入样式了）
 
 ```bash
 npm install vite-plugin-style-import@1.4.1 -D
