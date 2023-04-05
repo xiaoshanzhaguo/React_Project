@@ -309,3 +309,19 @@ function App() {
 http://localhost:3002/home
 http://localhost:3002/about
 ```
+
+
+### 9.2 编程式导航--设置菜单点击跳转
+
+/src/App.tsx中，使用<Link/>组件进行跳转：
+
+```tsx
+import { Outlet, link } from "react-router-dom"
+...
+<div className="App">
+	<Link to="/home">home</Link>
+    <Link to="/aobut">aobut</Link>
+    {/* 占位符组件，类似于窗口，用来展示组件的，有点像Vue中的 router-view */}
+    <Outlet />
+</div>
+```
