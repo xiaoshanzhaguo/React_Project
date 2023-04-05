@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Button } from 'antd';
 import { UpCircleOutlined } from '@ant-design/icons';
+// import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'  antd5就不需要引入样式了。全局，全部组件的样式都引入
 
-// import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'  antd5就不需要引入样式了
 function App() {
   const [count, setCount] = useState(0)
 

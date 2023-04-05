@@ -127,7 +127,7 @@ npm i -D @types/node
 
 安装Antd Design
 
-```js
+```bash
 // 使用 npm 安装
 npm install antd --save
 
@@ -137,7 +137,7 @@ yarn add antd
 
 安装图标所需模块
 
-```js
+```bash
 // 使用 npm 安装
 npm install --save @ant-design/icons
 
@@ -166,5 +166,43 @@ function App() {
 }
 
 export default App
+```
+
+
+
+## 八、配置Antd Design样式自动按需引入
+
+antd的4.x版本以上已经支持组件按需引入，我们只需要解决样式上的自动按需引入即可。
+
+安装插件vite-plugin-style-import
+
+```bash
+npm install vite-plugin-style-import@1.4.1 -D
+```
+
+在vite.config.ts中进行配置：
+
+```tsx
+import styleImport, {AntdResolve} from 'vite-plugin-style-import';
+
+export default defineConfig({
+    plugins: [
+        react(),  // 默认给的
+        styleImport({
+            resolves: [
+                AntdResolve()
+            ],
+        }),
+    ]
+    ...
+})
+```
+
+在去掉APP.tsx中的 `import 'antd/dist/antd.css; // or 'antd/dist/antd.less'` 这一行样式引入
+
+启动项目，发现报错，缺少less，进行安装
+
+```bash
+npm i less@2.7.1 -D
 ```
 
