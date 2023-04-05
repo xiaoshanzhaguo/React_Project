@@ -511,3 +511,13 @@ const routes = [
 ]
 ```
 
+
+
+## 十一、首页布局
+
+使用侧边布局：https://ant.design/components/layout-cn#components-layout-demo-side
+
+将代码复制到Home.tsx中，并将App修改为View，只需存在一个App。
+
+此外，新版本不需要复制样式了。
+

@@ -13,9 +13,9 @@ function App() {
 
   return (
     <div className="App">
-      <Link to="/home">home</Link>
+      {/* <Link to="/home">home</Link>
       <Link to="/about">aobut</Link>
-      <Link to="/user">user</Link>
+      <Link to="/user">user</Link> */}
 
       {/* 占位符组件，类似于窗口，用来展示组件的，有点像Vue中的 router-view */}
       {/* <Outlet></Outlet> */}
