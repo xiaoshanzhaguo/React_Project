@@ -206,3 +206,106 @@ export default defineConfig({
 npm i less@2.7.1 -D
 ```
 
+
+
+## 九、React路由——第一种配置方案（旧项目中的写法）
+
+16、17版本，路由是组件的形式来编写的，以前要转成对象的形式，再map出来
+
+### 9.1 初步展示
+
+我们在这里模拟vue中的Home和About两个组件展示
+
+【1. 准备界面】首先src下创建views文件夹，views文件夹下创建Home.tsx和About.tsx，大致代码如下：
+
+```tsx
+function View() {
+	return (
+		<div className="home">
+			<p>这是Home组件</p>
+		</div>
+	)
+}
+
+export default View
+```
+
+【2. 配置对应关系】/src下创建router文件夹，再进去新建index.tsx
+
+```tsx
+import App from "../App"
+import Home from "../views/Home"
+import About from "../views/About"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+// 两种路路由模式的组件：BrowserRouter（History模式），HashRouter（Hash模式）
+
+// const baseRouter = () => {
+//     return (
+//         <BrowserRouter>
+//             <Routes>
+//                 <Route path="/" element={<App />}>
+//                     <Route path="/home" element={<Home />}></Route>
+//                     <Route path="/about" element={<About />}></Route>
+//                 </Route>
+//             </Routes>
+//         </BrowserRouter>
+//     )
+// }
+// 以上写法可以简写为：
+const baseRouter = () => {
+    // 中间没有逻辑，因此不用写return
+    <BrowserRouter>
+        {/* Routes表示将来可以放多条路由 */}
+        <Routes>
+            {/* 一个Route就是一条路由 */}
+            <Route path="/" element={<App />}>
+                <Route path="/home" element={<Home />}></Route>
+                <Route path="/about" element={<About />}></Route>
+            </Route>
+        </Routes>
+    </BrowserRouter>
+}
+export default baseRouter
+
+
+// {
+//     path: "/home",
+//     component:
+// }
+```
+
+【3. 替换顶级组件】在/src/main.tsx中**把顶级组件App替换为这个路由对象：**
+
+```tsx
+// 引入路由对象
+import Router from './router';
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+	<React.StrictMode>
+    	<Router />
+    </React.StrictMode>
+)
+```
+
+【4. 添加窗口组件】/src/App.tsx中，使用<Outlet/>组件作为占位符组件：
+
+```tsx
+import { Outlet } from "react-router-dom"
+function App() {
+    // const [count, setCount] = useState(0)
+    
+    return (
+    	<div className="App">
+        	{/* 占位符组件，类似于窗口，用来展示组件的，有点像Vue中的 router-view */}
+            <Outlet></Outlet>
+        </div>
+    )
+}
+```
+
+这样就可以在浏览器中访问下面的地址，看到页面了：
+
+```
+http://localhost:3002/home
+http://localhost:3002/about
+```
