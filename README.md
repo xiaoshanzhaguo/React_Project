@@ -341,3 +341,92 @@ import { BrowerRouter, Routes, Route, Navigate } from "react-router-dom"
     <Route path="/about" element={<About />}></Route>
 </Route>
 ```
+
+
+
+## 十、React路由——第二种配置方案
+
+【1. 修改router/index.tsx】
+
+```tsx
+import Home from "../views/Home"
+import About from "../views/About"
+import User from "../views/User"
+// Navigate重定向组件
+import { Navigate } from "react-router-dom"
+
+const routes = [
+    {
+        path: "/",
+        element: <Navigate to="/home" />
+    },
+    {
+        path: "/home",
+        element: <Home />
+    },
+    {
+        path: "/about",
+        element: <About />
+    },
+    {
+        path: "/user",
+        element: <User />
+    }
+]
+
+export default routes
+```
+
+【2. 修改main.tsx】使用原来的App，同时外层要加上BrowerRouter，history模式
+
+```tsx
+import App from './App'
+import { BrowserRouter } from "react-router-dom"
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    {/* 之前这里报错的原因是router里的简写有问题 */}
+    {/* <Router /> */}
+
+    {/* 一定要加上BroserRouter，history模式 */}
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>,
+)
+```
+
+【3. 修改App.tsx】换成Hook形式的对象
+
+```tsx
+import { useState } from 'react'
+// import { Button } from 'antd'
+// import { UpCircleOutlined } from "@ant-design/icons"
+// import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'  antd5就不需要引入样式了。全局，全部组件的样式都引入
+// import { Outlet, Link } from "react-router-dom"
+import { useRoutes, Link } from 'react-router-dom'
+import router from "./router"
+
+function App() {
+  const [count, setCount] = useState(0)
+  // 换成Hook形式的对象
+  const outlet = useRoutes(router)
+
+  return (
+    <div className="App">
+      <Link to="/home">home</Link>
+      <Link to="/about">aobut</Link>
+      <Link to="/user">user</Link>
+
+      {/* 占位符组件，类似于窗口，用来展示组件的，有点像Vue中的 router-view */}
+      {/* <Outlet></Outlet> */}
+
+      {outlet}
+    </div>
+  )
+}
+
+export default App
+
+```
+

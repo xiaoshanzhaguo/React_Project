@@ -7,14 +7,20 @@ import "reset-css"
 
 // 全局样式
 import "@/assets/styles/global.scss"
+import App from './App'
+import { BrowserRouter } from "react-router-dom"
 // 组件的样式
-// import App from './App'
 // 引入路由对象
-import Router from './router';
+// import Router from './router';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     {/* 之前这里报错的原因是router里的简写有问题 */}
-    <Router />
+    {/* <Router /> */}
+
+    {/* 一定要加上BroserRouter，history模式 */}
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>,
 )
