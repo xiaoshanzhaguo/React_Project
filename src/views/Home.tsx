@@ -28,8 +28,8 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-    getItem('栏目1', '1', <PieChartOutlined />),
-    getItem('栏目2', '2', <DesktopOutlined />),
+    getItem('栏目1', '/page1', <PieChartOutlined />),
+    getItem('栏目2', '/page2', <DesktopOutlined />),
     getItem('User', 'sub1', <UserOutlined />, [
         getItem('Tom', '3'),
         getItem('Bill', '4'),
@@ -42,12 +42,18 @@ const items: MenuItem[] = [
 const View: React.FC = () => {
     const [collapsed, setCollapsed] = useState(false);
 
+    const menuClick = (e: {key: string}) => {
+        console.log("点击了菜单", e.key);
+        
+        // 点击跳转到对应的路由
+    }
+
     return (
         <Layout style={{ minHeight: '100vh' }}>
             {/* 左边侧边栏 */}
             <Sider collapsible collapsed={collapsed} onCollapse={value => setCollapsed(value)}>
                 <div className="logo" />
-                <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+                <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} onClick={menuClick} />
             </Sider>
             {/* 右边侧边栏 */}
             <Layout className="site-layout">

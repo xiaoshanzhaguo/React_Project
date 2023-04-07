@@ -539,3 +539,12 @@ const routes = [
  }
 ```
 
+
+
+## 十三、点击跳转
+
+### 13.1 点击侧边栏获取到路径
+
+home.tsx
+
+![image-20230407184241088](https://blog-1301840846.cos.ap-nanjing.myqcloud.com/img/image-20230407184241088.png)
