@@ -513,11 +513,29 @@ const routes = [
 
 
 
-## 十一、首页布局
+## 十一、首页布局（含侧边栏）
 
 使用侧边布局：https://ant.design/components/layout-cn#components-layout-demo-side
 
 将代码复制到Home.tsx中，并将App修改为View，只需存在一个App。
 
 此外，新版本不需要复制样式了。
+
+
+
+## 十二、页面右侧结构样式的调整
+
+**报错：未找到antd下的一个文件，因此，换用antd版本：5.4.1 -> 4.23.4**
+
+主要修改了Home.tsx中的以下代码：
+
+![image-20230407183040541](https://blog-1301840846.cos.ap-nanjing.myqcloud.com/img/image-20230407183040541.png)
+
+同时，global.scss也修改了一个样式的背景色
+
+```scss
+ .site-layout .site-layout-background {
+   background: #ccc;
+ }
+```
 
