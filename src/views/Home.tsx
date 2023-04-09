@@ -8,6 +8,7 @@ import {
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu } from 'antd';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -41,11 +42,13 @@ const items: MenuItem[] = [
 
 const View: React.FC = () => {
     const [collapsed, setCollapsed] = useState(false);
+    const navigeteTo = useNavigate();
 
-    const menuClick = (e: {key: string}) => {
+    const menuClick = (e: { key: string }) => {
         console.log("点击了菜单", e.key);
-        
-        // 点击跳转到对应的路由
+
+        // 点击跳转到对应的路由  编程式导航跳转，利用到一个hook
+        navigeteTo(e.key);
     }
 
     return (

@@ -548,3 +548,9 @@ const routes = [
 home.tsx
 
 ![image-20230407184241088](https://blog-1301840846.cos.ap-nanjing.myqcloud.com/img/image-20230407184241088.png)
+
+### 13.2 跳转的实现
+
+引入`useNavigate` ，然后下方代码进行使用
+
+![image-20230409152235651](https://blog-1301840846.cos.ap-nanjing.myqcloud.com/img/image-20230409152235651.png)
