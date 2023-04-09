@@ -1,7 +1,7 @@
 const View = () => {
     return (
-        <div className="user">
-            <p>这是user组件</p>
+        <div className="page1">
+            <p>这是Page1页面内容</p>
         </div>
     )
 }
