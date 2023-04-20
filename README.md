@@ -598,3 +598,34 @@ const View: React.FC = () => {
       </Layout>
 ```
 
+
+
+14.2 设置只能有一个展开项
+
+```tsx 
+const View: React.FC = () => {
+  // ...
+  const [openKeys, setOpenKeys] = useState(['']);
+  const handleOpenChange = (keys: string[]) => {
+      //什么时候执行这个函数里面的代码？ 展开和回收某项菜单的时候，执行这里的代码
+      // console.log(keys);  // keys是一个数组，记录了当前哪一项是展开的（用key来记录）
+      // 把这个数组修改成最后一项，因为只要一项是展开的，就是刚刚点击的这一项
+      setOpenKeys([keys[keys.length - 1]]);
+  }
+  
+	return (
+    // ...
+    <Menu 
+        theme="dark" 
+        defaultSelectedKeys={['/page1']} 
+        mode="inline" 
+        items={items} 
+        onClick={menuClick}
+        // 某项菜单展开和回收的事件
+        onOpenChange={handleOpenChange}
+        // 当前菜单展开项的key数组
+        openKeys={openKeys}
+    />
+  )
+```
+
