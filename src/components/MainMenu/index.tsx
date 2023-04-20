@@ -8,7 +8,7 @@ import {
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -99,9 +99,14 @@ const items: MenuItem[] = [
 
 const Comp: React.FC = () => {
     const navigeteTo = useNavigate();
+    const currentRoute = useLocation();
+    console.log("-------", currentRoute.pathname); // 严格模式下，会打印两次
+    // 如果发现加载两次，这是开发环境下才会，生产环境就不会了。在main.tsx把严格模式标签去掉就不会了。
+    // 至于为什么React要它加载两次，详见：https://blog.csdn.net/HYHhmbb/article/details/125973790
+    
 
     const menuClick = (e: { key: string }) => {
-        console.log("点击了菜单", e.key);
+        // console.log("点击了菜单", e.key);
 
         // 点击跳转到对应的路由  编程式导航跳转，利用到一个hook
         navigeteTo(e.key);
@@ -117,8 +122,9 @@ const Comp: React.FC = () => {
 
     return (
         <Menu
-            theme="dark" 
-            defaultSelectedKeys={['/page1']} 
+            theme="dark"
+            // defaultSelectedKeys  表示当前样式所在选中项的key
+            defaultSelectedKeys={[currentRoute.pathname]}
             mode="inline"
             // 菜单项数据
             items={items} 

@@ -14,13 +14,13 @@ import { BrowserRouter } from "react-router-dom"
 // import Router from './router';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    {/* 之前这里报错的原因是router里的简写有问题 */}
-    {/* <Router /> */}
+  // <React.StrictMode>
+    // {/* 之前这里报错的原因是router里的简写有问题 */}
+    // {/* <Router /> */}
 
-    {/* 一定要加上BroserRouter，history模式 */}
+    // {/* 一定要加上BroserRouter，history模式 */}
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </React.StrictMode>,
+  // </React.StrictMode>
 )

@@ -819,3 +819,37 @@ const routes = [
 ]
 ```
 
+
+
+### 14.6 刷新时，默认当前选中项样式的处理
+
+MainMenu.tsx：
+
+```tsx
+import { useNavigate, useLocation } from "react-router-dom";
+...
+const Comp: React.FC = () => {
+    const navigeteTo = useNavigate();
+    const currentRoute = useLocation();
+    console.log("-------", currentRoute.pathname); // 严格模式下，会打印两次
+    // 如果发现加载两次，这是开发环境下才会，生产环境就不会了。在main.tsx把严格模式标签去掉就不会了。
+    // 至于为什么React要它加载两次，详见：https://blog.csdn.net/HYHhmbb/article/details/125973790
+    
+
+return (
+  <Menu
+      theme="dark"
+      // defaultSelectedKeys  表示当前样式所在选中项的key
+      defaultSelectedKeys={[currentRoute.pathname]}
+      mode="inline"
+      // 菜单项数据
+      items={items} 
+      onClick={menuClick}
+      // 某项菜单展开和回收的事件
+      onOpenChange={handleOpenChange}
+      // 当前菜单展开项的key数组
+      openKeys={openKeys}
+  />
+)
+```
+
