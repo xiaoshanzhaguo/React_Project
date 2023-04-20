@@ -31,12 +31,12 @@ function getItem(
 const items: MenuItem[] = [
     getItem('栏目1', '/page1', <PieChartOutlined />),
     getItem('栏目2', '/page2', <DesktopOutlined />),
-    getItem('User', 'sub1', <UserOutlined />, [
+    getItem('User', 'page3', <UserOutlined />, [
         getItem('Tom', '3'),
         getItem('Bill', '4'),
         getItem('Alex', '5'),
     ]),
-    getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
+    getItem('Team', 'page4', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
     getItem('Files', '9', <FileOutlined />),
 ];
 
@@ -51,12 +51,25 @@ const View: React.FC = () => {
         navigeteTo(e.key);
     }
 
+    const handleOpenChange = (keys: string[]) => {
+        //什么时候执行这个函数里面的代码？ 展开和回收某项菜单的时候，执行这里的代码
+        console.log(keys);  // keys是一个数组，记录了当前哪一项是展开的（用key来记录）
+    }
+
     return (
         <Layout style={{ minHeight: '100vh' }}>
             {/* 左边侧边栏 */}
             <Sider collapsible collapsed={collapsed} onCollapse={value => setCollapsed(value)}>
                 <div className="logo" />
-                <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} onClick={menuClick} />
+                <Menu 
+                    theme="dark" 
+                    defaultSelectedKeys={['/page1']} 
+                    mode="inline" 
+                    items={items} 
+                    onClick={menuClick}
+                    // 某项菜单展开和回收的事件
+                    onOpenChange={handleOpenChange} 
+                />
             </Sider>
             {/* 右边侧边栏 */}
             <Layout className="site-layout">

@@ -556,3 +556,45 @@ home.tsx
 ![image-20230409152235651](https://blog-1301840846.cos.ap-nanjing.myqcloud.com/img/image-20230409152235651.png)
 
 ### 13.3 嵌套路由写法（路由跳转和组件内容切换）
+
+
+
+## 十四、菜单栏
+
+#### 14.1 展开和回收事件的理解
+
+页面一刷新，默认选中的是第一个栏目，Home.tsx页面中，默认选中的key数组更换一下：
+
+```tsx
+<Menu theme="dark" defaultSelectedKeys={['/page1']} mode="inline" items={items} onClick={menuClick}/>
+```
+
+想要完成点击展开新一项的时候，其他的收起来，在Home.tsx页面的Menu组件补充一个属性和一个事件：
+
+```tsx
+const View: React.FC = () => {
+    // ...
+    const handleOpenChange = (keys: string[]) => {
+        //什么时候执行这个函数里面的代码？ 展开和回收某项菜单的时候，执行这里的代码
+        console.log(keys);  // keys是一个数组，记录了当前哪一项是展开的（用key来记录）
+    }
+
+    return (
+        <Layout style={{ minHeight: '100vh' }}>
+            {/* 左边侧边栏 */}
+            <Sider collapsible collapsed={collapsed} onCollapse={value => setCollapsed(value)}>
+                <div className="logo" />
+                <Menu 
+                theme="dark" 
+                defaultSelectedKeys={['/page1']} 
+                mode="inline" 
+                items={items} 
+                onClick={menuClick}
+                // 某项菜单展开和回收的事件
+                onOpenChange={handleOpenChange} 
+            />
+            </Sider>
+        // ...
+      </Layout>
+```
+
