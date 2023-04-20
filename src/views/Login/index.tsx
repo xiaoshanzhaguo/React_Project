@@ -33,7 +33,7 @@ const view = () => {
                 <img height="38" src="" alt="" />
               </div>
             </div>
-            <Button type="primary" block>
+            <Button type="primary" className="loginBtn" block>
               登录
             </Button>
           </Space>

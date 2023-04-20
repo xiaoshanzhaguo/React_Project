@@ -1098,3 +1098,16 @@ const view = () => {
 }
 ```
 
+
+
+### 15.4 placeholder字体颜色的控制
+
+修改less文件：
+
+```less
+.ant-input::-webkit-input-placeholder {
+  // color: #1890ff;
+  color: rgba(24, 144, 255, .6);
+}
+```
+
