@@ -12,31 +12,90 @@ import { useNavigate } from "react-router-dom";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
-function getItem(
-    label: React.ReactNode,
-    key: React.Key,
-    icon?: React.ReactNode,
-    children?: MenuItem[],
-): MenuItem {
-    return {
-        key,
-        icon,
-        children,
-        label,
-    } as MenuItem;
-}
+// 下面两部分作用：构建菜单数据，构建item
 
+// getItem为一个函数，最终返回一个对象
+// function getItem(
+//     // 参数
+//     label: React.ReactNode,
+//     key: React.Key,
+//     icon?: React.ReactNode,
+//     children?: MenuItem[],
+// ): MenuItem {
+//     return {
+//         key,
+//         icon,
+//         children,
+//         label,
+//     } as MenuItem;
+// }
+
+// // items为一个个对象构成的数组
+// // 构造了一个个对象，通过函数去限制对象构造
+// const items: MenuItem[] = [
+//     getItem('栏目1', '/page1', <PieChartOutlined />),
+//     getItem('栏目2', '/page2', <DesktopOutlined />),
+//     getItem('User', 'page3', <UserOutlined />, [
+//         getItem('Tom', '3'),
+//         getItem('Bill', '4'),
+//         getItem('Alex', '5'),
+//     ]),
+//     getItem('Team', 'page4', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
+//     getItem('Files', '9', <FileOutlined />),
+// ];
+
+// 登陆请求岛数据之后，就可以跟items数组进行匹配
 const items: MenuItem[] = [
-    getItem('栏目1', '/page1', <PieChartOutlined />),
-    getItem('栏目2', '/page2', <DesktopOutlined />),
-    getItem('User', 'page3', <UserOutlined />, [
-        getItem('Tom', '3'),
-        getItem('Bill', '4'),
-        getItem('Alex', '5'),
-    ]),
-    getItem('Team', 'page4', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-    getItem('Files', '9', <FileOutlined />),
-];
+    {
+      label: '栏目1',
+      key: '/page1',
+      icon: <PieChartOutlined />,
+    },
+    {
+      label: '栏目2',
+      key: '/page2',
+      icon: <DesktopOutlined />,
+    },
+    {
+      label: '栏目3',
+      key: '/page3',
+      icon: <UserOutlined />,
+      children: [
+        {
+          label: '栏目 301',
+          key: '/page3/page301'
+        },
+        {
+          label: '栏目 302',
+          key: '/page3/page302'
+        },
+        {
+          label: '栏目 303',
+          key: '/page3/page303'
+        }
+      ]
+    },
+    {
+      label: '栏目4',
+      key: '/page4',
+      icon: <TeamOutlined />,
+      children: [
+        {
+          label: '栏目 401',
+          key: '/page4/page401'
+        },
+        {
+          label: '栏目 402',
+          key: '/page4/page402'
+        }
+      ]
+    },
+    {
+      label: '栏目5',
+      key: '/page5',
+      icon: <FileOutlined />,
+  },
+]
 
 const Comp: React.FC = () => {
     const navigeteTo = useNavigate();
@@ -60,7 +119,8 @@ const Comp: React.FC = () => {
         <Menu
             theme="dark" 
             defaultSelectedKeys={['/page1']} 
-            mode="inline" 
+            mode="inline"
+            // 菜单项数据
             items={items} 
             onClick={menuClick}
             // 某项菜单展开和回收的事件
