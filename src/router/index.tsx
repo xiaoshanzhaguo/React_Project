@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom"
 import Home from "../views/Home"
 // import About from "../views/About"
 // import User from "../views/User"
-const User = lazy(() => import("../views/User"))
+import Login from "../views/Login"
 const Page1 = lazy(() => import("../views/Page1"))
 const Page2 = lazy(() => import("../views/Page2"))
 const Page301 = lazy(() => import("../views/Page301"))
@@ -44,6 +44,10 @@ const routes = [
       ]
     },
     // 嵌套路由 结束------
+    {
+      path: "/login",
+      element: <Login />
+    },
     // 访问其余路径的时候，直接跳到首页
     {
       path: '*',

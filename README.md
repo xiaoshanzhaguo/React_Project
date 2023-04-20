@@ -885,7 +885,7 @@ MainMenu.tsx：
 
 解决items[i]!['children']的红色曲线警告：
 
-我们在项目中的tsconfig.json文件中添加：`"suppressImplicitAnyIndexErrors": true` 选项，**重启viscode !**
+我们在项目中的tsconfig.json文件中添加：`"suppressImplicitAnyIndexErrors": true` 选项，**重启vscode !**
 
 详细查看官方文档：https://www.typescriptlang.org/tsconfig#suppressImplicitAnyIndexErrors
 
@@ -896,3 +896,59 @@ MainMenu.tsx：
 }
 ```
 
+
+
+
+
+## 15.登陆界面
+
+### 15.1 登陆组件的创建和背景设置
+
+添加路由：
+
+```tsx
+import Login from "../views/Login"
+...
+const routes = [
+  ...
+    {
+      path: "/login",
+      element: <Login />
+    },
+]
+```
+
+Login/index.tsx：
+
+```tsx
+import { useEffect } from "react"
+import styles from "./login.module.scss"
+import initLoginBg from "./init"
+const view = () => {
+  // 加载完组件后，加载背景
+  useEffect(() => {
+    initLoginBg();
+    window.onresize = function() {initLoginBg()};
+  }, [])
+
+  return (
+    <div className={styles.loginPage}>
+      {/* 存放背景 */}
+      <canvas id="canvas" style={{display: "block"}}></canvas>
+      {/* 登陆盒子 */}
+      <div className={styles.loginBox}>
+        <div className={styles.title}>
+          <h1>通用后台系统</h1>
+          <p>Strive Everday</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default view
+```
+
+并且添加两个文件，一个是init.ts——用来做背景星空效果，另一个是css文件login.module.scss。
+
+在引入init.ts会报错，解决办法是在vite-env.d.ts中添加 `declare module "*.ts"` ，如果还是不行，就去除掉import代码中最后的ts。`import initLoginBg from "./init"`
