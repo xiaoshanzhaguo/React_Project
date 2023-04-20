@@ -27,6 +27,12 @@ const view = () => {
           <Space direction="vertical" size="large" style={{ display: 'flex' }}>
             <Input placeholder="用户名" />
             <Input.Password placeholder="密码" />
+            <div className="captchBox">
+              <Input placeholder="验证码" />
+              <div className="captchImg">
+                <img height="38" src="" alt="" />
+              </div>
+            </div>
             <Button type="primary" block>
               登录
             </Button>

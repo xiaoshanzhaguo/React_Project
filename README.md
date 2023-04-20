@@ -1034,3 +1034,67 @@ export default view
 - 然后在Login/index.tsx中引入样式：`import 'antd/dist/antd.css' // or 'antd/dist/antd.less'`
 
   
+
+### 15.3 验证码模块布局
+
+修改Login/index.tsx：
+
+```tsx
+// ...
+const view = () => {
+  // ...
+  return (
+  	...
+    <div className="form">
+      ...
+      <div className="captchBox">
+        <Input placeholder="验证码" />
+        <div className="captchImg">
+          <img height="38" src="" alt="" />
+        </div>
+      </div>
+      <Button type="primary" className="loginBtn" block>
+           登录
+      </Button>
+    </div>
+  )
+}
+```
+
+修改less文件：
+
+```less
+.loginbox {
+  // 控制表单元素
+  .ant-input, .ant-input-password {
+    background-color: rgba(255, 255, 255, 0);
+    border-color: #1890ff;
+    color: #fff;
+    height: 38px;
+  }
+
+  .ant-input-password .ant-input {
+    height: 28px;
+  }
+
+  // 控制眼睛图标
+  .ant-input-password-icon.anticon, .ant-input-password-icon.anticon:hover {
+    color: #1890ff;
+  }
+
+  // 控制验证码盒子
+  .captchBox {
+    display: flex;
+    .captchImg {
+      margin-left: 20px;
+      cursor: pointer;
+    }
+  }
+
+  // 控制登录按钮
+  .loginBtn {
+    height: 38px;
+  }
+}
+```
+
