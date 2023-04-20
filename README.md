@@ -1123,7 +1123,7 @@ const view = () => {
   // 下面是具体的实现
 
   // 获取用户输入的信息
-  const [usernameVal, setUsernameVal] = useState("");  // 定义用户输入信息这个变量
+  const [usernameVal, setUsernameVal] = useState("");  // 定义用户输入用户名这个变量
   const usernameChange = (e: ChangeEvent<HTMLInputElement>) => {
     // 获取用户输入的用户名
     // console.log(e.target.value);
@@ -1137,6 +1137,43 @@ return (
 	...
   // 为用户输入框添加事件
 	<Input placeholder="用户名" onChange={usernameChange} />
+)
+```
+
+
+
+### 15.6 点击获取用户输入的密码和验证码
+
+原理同获取用户输入的用户名
+
+修改Login/index.tsx：
+
+```tsx
+const view = () => {
+  const [passwordVal, setPasswordVal] = useState("");  // 定义用户输入密码这个变量
+  const [captchVal, setCaptchVal] = useState("");  // 定义用户输入验证码这个变量
+  
+  const passwordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPasswordVal(e.target.value);
+  }
+  const captchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setCaptchVal(e.target.value);
+  }
+  // 点击登录按钮的事件
+  const gotoLogin = () => {
+    console.log('用户输入的用户名，密码，验证码分别是：', usernameVal, passwordVal, captchVal);
+  }
+}
+
+return (
+	...
+  <Input.Password placeholder="密码" onChange={passwordChange} />
+  ...
+  <Input placeholder="验证码" onChange={captchChange} />
+  ...
+  <Button type="primary" className="loginBtn" block onClick={gotoLogin}>
+     登录
+  </Button>
 )
 ```
 
