@@ -853,3 +853,46 @@ return (
 )
 ```
 
+
+
+### 14.7 配置初始展开项(有难度)
+
+MainMenu.tsx：
+
+```tsx
+// 拿着currentRoute.pathname跟items数组的每一项的children的key值进行对比，如果找到了相等了，就要他上一级的key
+  // 这个key给到openKeys数组的元素，作为初始值
+
+  let firstOpenKey: string = "";
+  // 在这里进行对比  find
+  function findKey(obj: {key: string}) {
+    return obj.key === currentRoute.pathname;
+  }
+
+  // 找到items中某一项的children
+  // 要对比的是多个children
+  for (let i = 0; i < items.length; i++) {
+    // 这个结果如果找得到，找到的是一个对象，转布尔值就是true，否则转为false
+    if (items[i]!['children'] && items[i]!['children'].length > 0 && items[i]!['children'].find(findKey)) {
+      firstOpenKey = items[i]!.key as string;
+      break;
+    }
+  }
+  
+  // 设置展开项的初始值
+  const [openKeys, setOpenKeys] = useState([firstOpenKey]);
+```
+
+解决items[i]!['children']的红色曲线警告：
+
+我们在项目中的tsconfig.json文件中添加：`"suppressImplicitAnyIndexErrors": true` 选项，**重启viscode !**
+
+详细查看官方文档：https://www.typescriptlang.org/tsconfig#suppressImplicitAnyIndexErrors
+
+```json
+"compilerOptions": {
+  "suppressImplicitAnyIndexErrors": true,
+  ...
+}
+```
+
