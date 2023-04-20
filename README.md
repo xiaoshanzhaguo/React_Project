@@ -1177,3 +1177,72 @@ return (
 )
 ```
 
+
+
+
+
+## 16.react-redux
+
+如何安装redux devtools？
+
+需要在Chrome浏览器的扩展程序中，将 `Redux DevTools` 添加到Chrome中。同时需要打开开发者模式。
+
+### 16.1 创建仓库并和项目关联上
+
+#### ReactRedux的基本配置
+
+安装Redux和ReactRedux。在最开始的时候就已经安装了。
+
+```npm
+npm i redux react-redux --save
+```
+
+/src下新建store，新建index.ts文件
+
+```tsx
+import { createStore } from "redux"
+import reducer from "./reducer"  // 这里加.ts会报错
+
+// reducer用于管理数据
+// 创建数据仓库
+const store = createStore(reducer)
+
+export default store
+```
+
+/src/store下新建reducer.ts文件
+
+```tsx
+// 有点像vuex里的state，用来存放数据
+const defaultState = {
+  num: 20
+}
+let reducer = (state = defaultState,) => {
+  // 先进行深拷贝
+  let newState = JSON.parse(JSON.stringify(state));
+
+  return newState;
+}
+
+export default reducer
+```
+
+修改main.tsx：
+
+```tsx
+...
+// 状态管理
+import { Provider } from 'react-redux'
+import store from "@/store"
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+    // 在这里做注册/管理
+    <Provider store={store}>
+      {/* 一定要加上BroserRouter，history模式 */}
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+)
+```
+
