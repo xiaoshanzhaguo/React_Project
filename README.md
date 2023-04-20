@@ -776,3 +776,46 @@ const items: MenuItem[] = [
 ]
 ```
 
+
+
+### 14.5 其他路径的配置
+
+将About.tsx改为Page301.tsx，并配置路由。同时，为其他路径配置。
+
+```tsx
+// ...
+const Page301 = lazy(() => import("../views/Page301"))
+// ...
+const routes = [
+    // 嵌套路由 开始------
+    {
+      path: "/",
+      element: <Navigate to="/page1" />
+    },
+    {
+      path: "/",
+      element: <Home />,
+      children: [
+          {
+              path: "/page1",
+              element: withLoadingComponent(<Page1 />)
+          },
+          {
+              path: "/page2",
+              element: withLoadingComponent(<Page2 />)
+          },
+          {
+            path: "/page3/page301",
+            element: withLoadingComponent(<Page301 />)
+        },
+      ]
+    },
+    // 嵌套路由 结束------
+    // 访问其余路径的时候，直接跳到首页
+    {
+      path: '*',
+      element: <Navigate to="/page1" />
+    }
+]
+```
+
