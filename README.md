@@ -1047,6 +1047,7 @@ const view = () => {
   	...
     <div className="form">
       ...
+      {/* 验证码盒子 */}
       <div className="captchBox">
         <Input placeholder="验证码" />
         <div className="captchImg">
@@ -1109,5 +1110,33 @@ const view = () => {
   // color: #1890ff;
   color: rgba(24, 144, 255, .6);
 }
+```
+
+
+
+### 15.5 用户输入的用户名的获取
+
+修改Login/index.tsx：
+
+```tsx
+const view = () => {
+  // 下面是具体的实现
+
+  // 获取用户输入的信息
+  const [usernameVal, setUsernameVal] = useState("");  // 定义用户输入信息这个变量
+  const usernameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    // 获取用户输入的用户名
+    // console.log(e.target.value);
+
+    // 修改usernameVal这个变量为用户输入的值。以后拿到usernameVal变量就相当于拿到用户输入的信息
+    setUsernameVal(e.target.value);
+  }
+}
+
+return (
+	...
+  // 为用户输入框添加事件
+	<Input placeholder="用户名" onChange={usernameChange} />
+)
 ```
 
