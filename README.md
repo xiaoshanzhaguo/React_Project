@@ -561,7 +561,7 @@ home.tsx
 
 ## 十四、菜单栏
 
-#### 14.1 展开和回收事件的理解
+### 14.1 展开和回收事件的理解
 
 页面一刷新，默认选中的是第一个栏目，Home.tsx页面中，默认选中的key数组更换一下：
 
@@ -600,7 +600,7 @@ const View: React.FC = () => {
 
 
 
-14.2 设置只能有一个展开项
+### 14.2 设置只能有一个展开项
 
 ```tsx 
 const View: React.FC = () => {
@@ -629,3 +629,56 @@ const View: React.FC = () => {
   )
 ```
 
+
+
+### 14.3 菜单组件抽取
+
+由于菜单相关的代码太多，故从Home.tsx中抽取出一个菜单组件。
+
+新建一个MainMenu/index.tsx，将菜单相关的代码移过来：
+
+```tsx
+import { Breadcrumb, Layout } from 'antd';
+import React, { useState } from 'react';
+import { Outlet } from "react-router-dom";
+import MainMenu from "@/components/MainMenu"
+
+const { Header, Content, Footer, Sider } = Layout;
+
+const View: React.FC = () => {
+    const [collapsed, setCollapsed] = useState(false);
+    // const navigateTo = useNavigate()
+
+    return (
+        <Layout style={{ minHeight: '100vh' }}>
+            {/* 左边侧边栏 */}
+            <Sider collapsible collapsed={collapsed} onCollapse={value => setCollapsed(value)}>
+                <div className="logo" />
+                <MainMenu />
+            </Sider>
+            {/* 右边侧边栏 */}
+            <Layout className="site-layout">
+                {/* 右边头部 */}
+                <Header className="site-layout-background" style={{ paddingLeft: '16px' }}>
+                    {/* 面包屑 */}
+                    <Breadcrumb style={{ lineHeight: '64px' }}>
+                        <Breadcrumb.Item>User</Breadcrumb.Item>
+                        <Breadcrumb.Item>Bill</Breadcrumb.Item>
+                    </Breadcrumb>
+                </Header>
+                {/* 右边内容部分-白色底盒子 */}
+                <Content style={{ margin: '16px 16px 0' }} className="site-layout-background">
+                    {/* 窗口部分 */}
+                    <Outlet />
+                </Content>
+                {/* 右边底部 */}
+                <Footer style={{ textAlign: 'center', padding: 0, lineHeight: '48px' }}>Ant Design ©2018 Created by Ant UED</Footer>
+            </Layout>
+        </Layout>
+    );
+};
+
+export default View;
+```
+
+ 并且要删掉Home.tsx中相关的代码，并将MainMenu组件引入：`import MainMenu from "@/components/MainMenu"` ， 并使用：`<MainMenu />`
