@@ -8,11 +8,11 @@ import path from "path"
 export default defineConfig({
   plugins: [
     react(),
-    styleImport({
-      resolves: [
-        AntdResolve()
-      ],
-    }),
+    // styleImport({
+    //   resolves: [
+    //     AntdResolve()
+    //   ],
+    // }),
   ],
   resolve: {
     alias: {

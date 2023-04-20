@@ -900,9 +900,9 @@ MainMenu.tsx：
 
 
 
-## 15.登陆界面
+## 15.登录界面
 
-### 15.1 登陆组件的创建和背景设置
+### 15.1 登录组件的创建和背景设置
 
 添加路由：
 
@@ -952,3 +952,85 @@ export default view
 并且添加两个文件，一个是init.ts——用来做背景星空效果，另一个是css文件login.module.scss。
 
 在引入init.ts会报错，解决办法是在vite-env.d.ts中添加 `declare module "*.ts"` ，如果还是不行，就去除掉import代码中最后的ts。`import initLoginBg from "./init"`
+
+
+
+### 15.2 登录表单组件的构建
+
+Login/index.tsx：
+
+```tsx
+import { Input, Space, Button } from "antd"
+import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
+import './login.less'
+const view = () => {
+	// ...
+  
+  return (
+    <div className={styles.loginPage}>
+      {/* 存放背景 */}
+      <canvas id="canvas" style={{ display: "block" }}></canvas>
+      {/* 登陆盒子 */}
+      <div className={styles.loginBox + " loginbox"}>
+        {/* 标题部分 */}
+        <div className={styles.title}>
+          <h1>通用后台系统</h1>
+          <p>Strive Everday</p>
+        </div>
+        {/* 表单部分 */}
+        <div className="form">
+          <Space direction="vertical" size="large" style={{ display: 'flex' }}>
+            <Input placeholder="用户名" />
+            <Input.Password placeholder="密码" />
+            <Button type="primary" block>
+              登录
+            </Button>
+          </Space>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default view
+```
+
+新建一个login.less，用于设置表单各项样式：
+
+```less
+.loginbox {
+  // 控制表单元素
+  .ant-input, .ant-input-password {
+    background-color: rgba(255, 255, 255, 0);
+    border-color: #1890ff;
+    color: #fff;
+  }
+
+  // 控制眼睛图标
+  .ant-input-password-icon.anticon, .ant-input-password-icon.anticon:hover {
+    color: #1890ff;
+  }
+}
+```
+
+一开始添加了Input组件后，就报错。`Function 'each' is undefined`。vite本身的错误，解析不了less。故需要进行以下操作：
+
+- 先注释掉vite.config.ts中的以下代码：
+
+  ```ts
+  // ...
+  export default defineConfig({
+    plugins: [
+      react(),
+      // styleImport({
+      //   resolves: [
+      //     AntdResolve()
+      //   ],
+      // }),
+    ]
+  })
+  ```
+
+- 然后在Login/index.tsx中引入样式：`import 'antd/dist/antd.css' // or 'antd/dist/antd.less'`
+
+  
