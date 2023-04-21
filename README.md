@@ -1280,3 +1280,67 @@ const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window
 ...
 ```
 
+
+
+### 16.3 在组件中修改仓库数据
+
+修改Page1.tsx：
+
+```tsx
+import { useSelector, useDispatch } from "react-redux"
+
+const View = () => {
+  ...
+  
+  // 通过useDispatch修改仓库数据
+  const dispatch = useDispatch();
+  const changeNum = () => {
+    // dispatch({type: "字符串（认为是一个记号）", value: 3})  type是固定的，而value是自定义的
+    // dispatch({type: "add1"})
+    dispatch({type: 'add2', val: 10})
+  }
+  
+  return (
+        <div className="page1">
+            <p>这是Page1页面内容</p>
+            <p>{num}</p>
+            <button onClick={changeNum}>按钮</button>
+        </div>
+  )
+}
+...
+```
+
+修改reducer.ts，下面是完整代码：
+
+```ts
+// 就是来管理数据的
+// 有点像vuex里的state，用来存放数据
+const defaultState = {
+  num: 20
+}
+
+let reducer = (state = defaultState, action: {type: string, val: number}) => {
+  // 初始化会执行一遍，后面调用dispatch会执行
+  // console.log("执行了reducer");
+  
+  // 先进行深拷贝
+  let newState = JSON.parse(JSON.stringify(state));
+
+  switch(action.type) {
+    case "add1":
+      newState.num++
+      break;
+    case "add2":
+      newState.num += action.val
+      break;
+    default:
+      break;
+  }
+
+  return newState;
+}
+
+export default reducer
+```
+
