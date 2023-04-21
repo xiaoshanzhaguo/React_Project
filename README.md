@@ -1475,3 +1475,62 @@ let reducer = (state = defaultState, action: {type: string, val: number}) => {
 // ...
 ```
 
+
+
+### 16.7 为什么还要模块化reducer?
+
+因为如果不模块化reducer的话，我们新建一个ArrStatus时，还需要再reducer中添加对数组和方法的操作。如果模块多的话，代码就很冗余。
+
+/store下新建/ArrStatus/index.ts：
+
+```ts
+export default {
+  state: {
+    sarr: [10, 20, 30]
+  },
+  actions: {
+    sarrpush(newState: {sarr: number[]}, action: {type: string, val: number}) {
+      newState.sarr.push(action.val);
+    }
+  },
+  // 名字统一管理
+  sarrpush: "sarrpush"
+}
+```
+
+修改reducer.ts：
+
+```ts
+import handleArr from "./ArrStatus"
+
+const defaultState = {
+  // num: NumStatus.state.num  // 这种数据一多要写很多次
+  ...hanldeNum.state,  // 解构的写法
+  ...handleArr.state
+}
+...
+```
+
+修改Page1.tsx：
+
+```tsx
+// ...
+const View = () => {
+  // ...
+  
+  // 对sarr的操作
+  const { sarr } = useSelector((state: RootState) => ({
+    sarr: state.sarr
+  }))
+  
+  return (
+    <div className="page1">
+			...
+      <p>{sarr}</p>
+    </div>
+  )
+}
+```
+
+
+

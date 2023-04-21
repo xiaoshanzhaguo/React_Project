@@ -1,10 +1,12 @@
-import hanldeNum from "./NumStatus";
+import hanldeNum from "./NumStatus"
+import handleArr from "./ArrStatus"
 
 // 就是来管理数据的
 // 有点像vuex里的state，用来存放数据
 const defaultState = {
   // num: NumStatus.state.num  // 这种数据一多要写很多次
-  ...hanldeNum.state  // 解构的写法
+  ...hanldeNum.state,  // 解构的写法
+  ...handleArr.state
 }
 
 let reducer = (state = defaultState, action: {type: string, val: number}) => {
