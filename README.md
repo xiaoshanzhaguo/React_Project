@@ -1437,3 +1437,41 @@ let reducer = (state = defaultState, action: {type: string, val: number}) => {
 export default reducer
 ```
 
+
+
+### 16.6 方法名统一管理
+
+修改NumState/index.ts：
+
+```ts
+export default {
+ 	// ...
+  // 名字统一管理
+  add1: "add1",  // 这样写的话，reducer.ts中case "add1"就可以替换成 case 	handleNum.add1
+  add2: "add2"
+}
+```
+
+修改reducer.ts：
+
+```ts
+// ...
+let reducer = (state = defaultState, action: {type: string, val: number}) => {
+  ...
+ 	  switch(action.type) {
+    case hanldeNum.add1:
+      // newState.num++
+      hanldeNum.actions[hanldeNum.add1](newState, action)
+      break;
+    case hanldeNum.add2:
+      // newState.num += action.val
+      hanldeNum.actions[hanldeNum.add2](newState, action)
+      break;
+    default:
+      break;
+  }
+  ...
+}
+// ...
+```
+

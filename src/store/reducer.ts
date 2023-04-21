@@ -15,13 +15,13 @@ let reducer = (state = defaultState, action: {type: string, val: number}) => {
   let newState = JSON.parse(JSON.stringify(state));
 
   switch(action.type) {
-    case "add1":
+    case hanldeNum.add1:
       // newState.num++
-      hanldeNum.actions.add1(newState, action)
+      hanldeNum.actions[hanldeNum.add1](newState, action)
       break;
-    case "add2":
+    case hanldeNum.add2:
       // newState.num += action.val
-      hanldeNum.actions.add2(newState, action)
+      hanldeNum.actions[hanldeNum.add2](newState, action)
       break;
     default:
       break;
