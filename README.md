@@ -1193,7 +1193,7 @@ return (
 
 安装Redux和ReactRedux。在最开始的时候就已经安装了。
 
-```npm
+```bash
 npm i redux react-redux --save
 ```
 
@@ -1244,5 +1244,39 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </BrowserRouter>
     </Provider>
 )
+```
+
+
+
+### 16.2 在组件中获取仓库数据
+
+修改Page1.tsx：
+
+```tsx
+import { useSelector } from "react-redux"
+
+const View = () => {
+  // 通过useSelector获取仓库数据
+  const { num } = useSelector((state) => ({
+    num: state.num
+  })) // 这里再加一层小括号，表示要return一个对象
+  
+    return (
+        ...
+    )
+}
+```
+
+修改index.ts：
+
+```ts
+...
+
+// reducer用于管理数据
+// 创建数据仓库
+// window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() 为了让浏览器正常使用redux-dev-tools插件
+const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+ 
+...
 ```
 
