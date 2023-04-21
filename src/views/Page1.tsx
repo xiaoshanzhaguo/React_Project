@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 const View = () => {
   // 通过useSelector获取仓库数据
-  const { num } = useSelector((state) => ({
+  const { num } = useSelector((state: RootState) => ({
     num: state.num
   })) // 这里再加一层小括号，表示要return一个对象
 

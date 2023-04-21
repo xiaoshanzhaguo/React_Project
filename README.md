@@ -1344,3 +1344,34 @@ let reducer = (state = defaultState, action: {type: string, val: number}) => {
 export default reducer
 ```
 
+
+
+### 16.4 两个TS警告的解决方案
+
+/src下新建types/store.d.ts
+
+```ts
+// !!!【】类型声明文件厘米不要直接使用引入import ... from ...，而是使用import("@/store") 这种语法
+// import store from "@/store";  // 不建议在声明里这么写，否则在别的地方需要引入，这里需要导出
+// TS中提供了ReturnType，用来获取函数类型的返回值
+type RootState = ReturnType<typeof import("@/store").getState>
+
+interface Window {
+  __REDUX_DEVTOOLS_EXTENSION__: funciton;
+}
+```
+
+修改Page.tsx：
+
+```tsx
+...
+const View = () => {
+  // 通过useSelector获取仓库数据
+  const { num } = useSelector((state: RootState) => ({
+    num: state.num
+  })) // 这里再加一层小括号，表示要return一个对象
+  ...
+}
+...
+```
+
