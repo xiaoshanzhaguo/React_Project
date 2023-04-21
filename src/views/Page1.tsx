@@ -7,19 +7,23 @@ const View = () => {
   // 对num的操作
   // 通过useSelector获取仓库数据
   const { num } = useSelector((state: RootState) => ({
-    num: state.num
+    num: state.handleNum.num
   })) // 这里再加一层小括号，表示要return一个对象
 
   const changeNum = () => {
     // dispatch({type: "字符串（认为是一个记号）", value: 3})  type是固定的，而value是自定义的
     // dispatch({type: "add1"})
-    dispatch({ type: 'add2', val: 10 })
+    dispatch({ type: 'add2', val: 10 });
   }
 
   // 对sarr的操作
   const { sarr } = useSelector((state: RootState) => ({
-    sarr: state.sarr
-  }))
+    sarr: state.handleArr.sarr
+  }));
+
+  const changeArr = () => {
+    dispatch({type: "sarrpush", val: 100});
+  }
 
   return (
     <div className="page1">
@@ -28,6 +32,7 @@ const View = () => {
       <button onClick={changeNum}>按钮</button>
 
       <p>{sarr}</p>
+      <button onClick={changeArr}>按钮</button>
     </div>
   )
 }

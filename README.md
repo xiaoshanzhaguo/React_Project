@@ -1534,3 +1534,138 @@ const View = () => {
 
 
 
+### 16.8 模块化reducer并组合起来
+
+将reducer进行模块化。
+
+1. **/store的/NumStatus下新建reducer.ts：**
+
+同时，将...handleNum.state的解构写法写到reducer的参数里，因为只有一个，不必写到外面。
+
+```ts
+import handleNum from "./index"
+
+// 就是来管理数据的
+// 有点像vuex里的state，用来存放数据
+// const defaultState = {
+//   // num: NumStatus.state.num  // 这种数据一多要写很多次
+//   ...hanldeNum.state,  // 解构的写法
+// }
+
+let reducer = (state = {...handleNum.state}, action: {type: string, val: number}) => {
+  // 初始化会执行一遍，后面调用dispatch会执行
+  // console.log("执行了reducer");
+  
+  // 先进行深拷贝
+  let newState = JSON.parse(JSON.stringify(state));
+
+  switch(action.type) {
+    case handleNum.add1:
+      // newState.num++
+      handleNum.actions[handleNum.add1](newState, action)
+      break;
+    case handleNum.add2:
+      // newState.num += action.val
+      handleNum.actions[handleNum.add2](newState, action)
+      break;
+    default:
+      break;
+  }
+
+  return newState;
+}
+
+export default reducer
+```
+
+2. **/store的/ArrStatus下新建reducer.ts：**
+
+```ts
+import handleArr from "./index"
+
+let reducer = (state = {...handleArr.state}, action: {type: string, val: number}) => {
+  // 初始化会执行一遍，后面调用dispatch会执行
+  // console.log("执行了reducer");
+  
+  // 先进行深拷贝
+  let newState = JSON.parse(JSON.stringify(state));
+
+  switch(action.type) {
+    case handleArr.sarrpush:
+      // newState.num++
+      handleArr.actions[handleArr.sarrpush](newState, action)
+      break;
+    default:
+      break;
+  }
+
+  return newState;
+}
+
+export default reducer
+```
+
+3. **组合各个模块的reducer**，这时可以删除/store下的reducer.ts了。 
+
+   **修改/store/index.ts**，下面是完整代码：
+
+   ⚠️ 这里hanldeNum的名称最好与对应模块的reduer里的一致。
+
+```ts
+import { createStore, combineReducers } from "redux"
+import handleNum from "./NumStatus/reducer";
+import handleArr from './ArrStatus/reducer';
+
+// 组合各个模块的reducer
+const reducers = combineReducers({
+  handleNum,
+  handleArr
+})
+
+// reducer用于管理数据
+// 创建数据仓库
+// window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() 为了让浏览器正常使用redux-dev-tools插件
+const store = createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+ 
+export default store
+```
+
+4. **修改Page1.tsx：**
+
+```tsx
+// ...
+const View = () => {
+  // ...
+  const { num } = useSelector((state: RootState) => ({
+  	num: state.handleNum.num
+  })) // 这里再加一层小括号，表示要return一个对象
+  
+  const changeNum = () => {
+    // dispatch({type: "字符串（认为是一个记号）", value: 3})  type是固定的，而value是自定义的
+    // dispatch({type: "add1"})
+    dispatch({ type: 'add2', val: 10 });
+  }
+
+  // 对sarr的操作
+  const { sarr } = useSelector((state: RootState) => ({
+    sarr: state.handleArr.sarr
+  }));
+
+  const changeArr = () => {
+    dispatch({type: "sarrpush", val: 100});
+  }
+  
+  return (
+  	<div className="page1">
+      <p>这是Page1页面内容</p>
+      <p>{num}</p>
+      <button onClick={changeNum}>按钮</button>
+
+      <p>{sarr}</p>
+      <button onClick={changeArr}>按钮</button>
+    </div>
+  )
+}
+// ...
+```
+
