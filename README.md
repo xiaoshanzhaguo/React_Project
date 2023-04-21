@@ -1375,3 +1375,65 @@ const View = () => {
 ...
 ```
 
+
+
+### 16.5 数据和方法从reducer中进行抽离
+
+在reducer.ts中，数据都堆在一起，所有的方法都写在switch中，非常乱，不容易管理，因此需要进行数据和方法的抽离。
+
+在/src/store下新建NumStatus/index.ts，专门来存放数据：
+
+```ts
+export default {
+  state: {
+    num: 20
+  },
+  actions: {
+    add1(newState: {num: number}, action: {type: string}) {
+      newState.num++
+    },
+    add2(newState: {num: number}, action: {type: string, val: number}) {
+      newState.num += action.val
+    }
+  }
+} 
+```
+
+修改reducer.ts，下面是完整的代码：
+
+```ts
+import hanldeNum from "./NumStatus";
+
+// 就是来管理数据的
+// 有点像vuex里的state，用来存放数据
+const defaultState = {
+  // num: NumStatus.state.num  // 这种数据一多要写很多次
+  ...hanldeNum.state  // 解构的写法
+}
+
+let reducer = (state = defaultState, action: {type: string, val: number}) => {
+  // 初始化会执行一遍，后面调用dispatch会执行
+  // console.log("执行了reducer");
+  
+  // 先进行深拷贝
+  let newState = JSON.parse(JSON.stringify(state));
+
+  switch(action.type) {
+    case "add1":
+      // newState.num++
+      hanldeNum.actions.add1(newState, action)
+      break;
+    case "add2":
+      // newState.num += action.val
+      hanldeNum.actions.add2(newState, action)
+      break;
+    default:
+      break;
+  }
+
+  return newState;
+}
+
+export default reducer
+```
+
