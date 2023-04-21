@@ -11,8 +11,12 @@ export default {
     }
   },
   // 名字统一管理
-  add1: "add1",  // 这样写的话，reducer.ts中case "add1"就可以替换成 case handleNum.add1
-  add2: "add2"
+  // add1: "add1",  // 这样写的话，reducer.ts中case "add1"就可以替换成 case handleNum.add1
+  // add2: "add2"
+  actionNames: {
+    add1: "add1",
+    add2: "add2"
+  }
 }
 
 // 封装的目的：最终是有利于我们的开发或者维护
