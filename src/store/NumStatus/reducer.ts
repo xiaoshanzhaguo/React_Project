@@ -7,7 +7,7 @@ import handleNum from "./index"
 //   ...hanldeNum.state,  // 解构的写法
 // }
 
-let reducer = (state = {...handleNum.state}, action: {type: string, val: number}) => {
+let reducer = (state = {...handleNum.state}, action: {type: string}) => {
   // 初始化会执行一遍，后面调用dispatch会执行
   // console.log("执行了reducer");
   

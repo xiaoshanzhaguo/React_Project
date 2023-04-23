@@ -1739,3 +1739,68 @@ store.actionNames = actionNames;
 export default store
 ```
 
+
+
+#### 完善各个模块的reducer
+
+将之前修改好的ArrStatus下的index.ts和reducer.ts复制到新的XxxStatus中：
+
+index.ts：
+
+```ts
+const store =  {
+  state: {
+    sarr: [10, 20, 30]
+  },
+  actions: {
+    sarrpush(newState: {sarr: number[]}, action: {type: string, val: number}) {
+      newState.sarr.push(action.val);
+    }
+  },
+  actionNames: {}
+}
+let actionNames = {}
+for (let key in store.actions) {
+  actionNames[key] = key;
+}
+store.actionNames = actionNames;
+
+export default store
+```
+
+reducer.ts：
+
+```ts
+import handler from "./index"
+
+let reducer = (state = {...handler.state}, action: {type: string, val: number}) => {
+  let newState = JSON.parse(JSON.stringify(state));
+
+  for (let key in handler.actionNames) {
+    if (action.type === handler.actionNames[key]) {
+      handler.actions[handler.actionNames[key]](newState, action);
+      break;
+    }
+  }
+  return newState;
+}
+
+export default reducer
+```
+
+**新增XxxStatus后，需要在/store/index.ts中引入：**
+
+```ts
+import handleXxx from './XxxStatus/reducer'
+// ...
+
+// 组合各个模块的reducer
+const reducers = combineReducers({
+  handleNum,
+  handleArr,
+  handleXxx
+})
+
+// ...
+```
+
