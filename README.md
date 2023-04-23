@@ -1860,3 +1860,42 @@ interface Window {
 }
 ```
 
+
+
+### 17.2 基本使用
+
+修改Page1.tsx：
+
+```tsx
+// ...
+const View = () => {
+  // ...
+  
+  const changeNum2 = () => {
+    // 最开始的写法-同步的写法
+    // dispatch({ type: 'add1'});
+    // 异步的写法-  redux-thunk的用法   基本格式： dispatch(异步执行的函数)
+    dispatch((dis: Function) => {
+      // 让redux-thunk帮你异步调用
+      setTimeout(() => {
+        dis({type: "add1"})
+      }, 1000)
+    })
+  }
+  
+  // ...
+  return (
+    <div className="page1">
+      <p>这是Page1页面内容</p>
+      <p>{num}</p>
+      <button onClick={changeNum}>同步按钮</button>
+      <button onClick={changeNum2}>异步按钮</button>
+
+      <p>{sarr}</p>
+      <button onClick={changeArr}>按钮</button>
+    </div>
+  )
+}
+export default View
+```
+

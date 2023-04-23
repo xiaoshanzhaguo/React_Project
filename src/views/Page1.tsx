@@ -17,7 +17,15 @@ const View = () => {
   }
 
   const changeNum2 = () => {
-    dispatch({ type: 'add1'});
+    // 最开始的写法-同步的写法
+    // dispatch({ type: 'add1'});
+    // 异步的写法-  redux-thunk的用法   基本格式： dispatch(异步执行的函数)
+    dispatch((dis: Function) => {
+      // 让redux-thunk帮你异步调用
+      setTimeout(() => {
+        dis({type: "add1"})
+      }, 1000)
+    })
   }
 
   // 对sarr的操作
