@@ -7,8 +7,9 @@ const View = () => {
 
   // 对num的操作
   // 通过useSelector获取仓库数据
-  const { num } = useSelector((state: RootState) => ({
-    num: state.handleNum.num
+  const { num, sarr } = useSelector((state: RootState) => ({
+    num: state.handleNum.num,
+    sarr: state.handleArr.sarr  // 有点像Vuex里的mapState
   })) // 这里再加一层小括号，表示要return一个对象
 
   const changeNum = () => {
@@ -35,9 +36,9 @@ const View = () => {
   }
 
   // 对sarr的操作
-  const { sarr } = useSelector((state: RootState) => ({
-    sarr: state.handleArr.sarr
-  }));
+  // const { sarr } = useSelector((state: RootState) => ({
+  //   sarr: state.handleArr.sarr
+  // }));
 
   const changeArr = () => {
     dispatch({type: "sarrpush", val: 100});

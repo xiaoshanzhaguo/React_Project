@@ -1,4 +1,4 @@
-const store =  {
+const store = {
   state: {
     num: 20
   },
@@ -14,7 +14,7 @@ const store =  {
     }
   },
   // 优化redux-thunk的异步写法（模仿Vuex的写法）
-  asyncActions: {  // 只放一步的方法
+  asyncActions: {  // 只放异步的方法
     asyncAdd1(dispatch: Function) {
       // 让redux-thunk帮你异步调用
       setTimeout(() => {
