@@ -13,6 +13,15 @@ const store =  {
       newState.num += action.val
     }
   },
+  // 优化redux-thunk的异步写法（模仿Vuex的写法）
+  asyncActions: {  // 只放一步的方法
+    asyncAdd1(dispatch: Function) {
+      // 让redux-thunk帮你异步调用
+      setTimeout(() => {
+        dispatch({type: "add1"})
+      }, 1000)
+    }
+  },
   // 名字统一管理
   // add1: "add1",  // 这样写的话，reducer.ts中case "add1"就可以替换成 case handleNum.add1
   // add2: "add2"

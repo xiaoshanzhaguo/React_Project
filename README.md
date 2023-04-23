@@ -1899,3 +1899,62 @@ const View = () => {
 export default View
 ```
 
+
+
+### 17.3 异步函数从组件抽离到状态仓库中（模仿Vuex）
+
+修改/store/NumStatus/index.ts：
+
+```ts
+const store = {
+  // ...
+  
+  // 优化redux-thunk的异步写法（模仿Vuex的写法）
+  asyncActions: {  // 只放一步的方法
+    asyncAdd1(dispatch: Function) {
+      // 让redux-thunk帮你异步调用
+      setTimeout(() => {
+        dispatch({type: "add1"})
+      }, 1000)
+    }
+  },
+  
+  //...
+}
+
+// ...
+export default store
+```
+
+修改Page1.tsx：
+
+```tsx
+// ...
+import numStatus from '@/store/NumStatus'
+
+const View = () => {
+  // ...
+  
+  const changeNum2 = () => {
+    // 最开始的写法-同步的写法
+    // dispatch({ type: 'add1'});
+    // 异步的写法-  redux-thunk的用法   基本格式： dispatch(异步执行的函数)
+    // dispatch((dis: Function) => {
+    //   // 让redux-thunk帮你异步调用
+    //   setTimeout(() => {
+    //     dis({type: "add1"})
+    //   }, 1000)
+    // })
+
+    // 优化redux-thunk的异步写法（模仿Vuex的写法）
+    // dispatch(调用状态管理中的asyncAdd1)
+    // dispatch(numStatus.asyncActions.asyncAdd1(需要传的参数是内部调用的，但是不需要我们自己调用));
+    dispatch(numStatus.asyncActions.asyncAdd1);
+  }
+  
+  // ...
+}
+
+export default View
+```
+
