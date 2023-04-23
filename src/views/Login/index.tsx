@@ -4,6 +4,9 @@ import styles from "./login.module.scss"
 import initLoginBg from "./init"
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import './login.less'
+
+import { captchaAPI } from "@/request/api"
+
 const view = () => {
   // 加载完组件后，加载背景
   useEffect(() => {
@@ -27,9 +30,17 @@ const view = () => {
   const captchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setCaptchVal(e.target.value);
   }
-  // 点击登录按钮的事件
+  // 点击登录按钮的事件函数
   const gotoLogin = () => {
     console.log('用户输入的用户名，密码，验证码分别是：', usernameVal, passwordVal, captchVal);
+  }
+
+  // 点击验证码图片盒子的事件函数
+  const getCaptchImg = () => {
+    // 做验证码的请求
+    captchaAPI().then((res) => {
+      console.log(res);
+    })
   }
 
   return (
@@ -51,7 +62,7 @@ const view = () => {
             {/* 验证码盒子 */}
             <div className="captchBox">
               <Input placeholder="验证码" onChange={captchChange} />
-              <div className="captchImg">
+              <div className="captchImg" onClick={getCaptchImg}>
                 <img height="38" src="" alt="" />
               </div>
             </div>

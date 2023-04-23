@@ -900,7 +900,7 @@ MainMenu.tsx：
 
 
 
-## 15.登录界面
+## 十五、登录界面
 
 ### 15.1 登录组件的创建和背景设置
 
@@ -1181,7 +1181,7 @@ return (
 
 
 
-## 16.react-redux
+## 十六、react-redux
 
 如何安装redux devtools？
 
@@ -1806,7 +1806,7 @@ const reducers = combineReducers({
 
 
 
-## 17. redux-thunk
+## 十七、redux-thunk
 
 ### 17.1 仓库文件store的改造（为了异步）
 
@@ -1956,5 +1956,91 @@ const View = () => {
 }
 
 export default View
+```
+
+
+
+
+
+## 十八、数据交互
+
+### 18.1 获取验证码请求
+
+**axios封装和apis的抽取**
+
+安装axios：
+
+```bash
+npm i axios
+```
+
+/src下新建request文件夹，并新建index.ts：
+
+```ts
+import axios from "axios"
+
+// 创建axios实例
+const instance = axios.create({
+    // 基本请求路径的抽取
+    baseURL:"http://xue.cnkdl.cn:23683",
+    // 这个时间是你每次请求的过期时间，这次请求认为20秒之后这个请求就是失败的
+    timeout: 20000
+})
+
+// 请求拦截器
+instance.interceptors.request.use(config => {
+    return config
+}, err => {
+    return Promise.reject(err)
+});
+
+// 响应拦截器
+instance.interceptors.response.use(res => {
+    return res.data
+}, err => {
+    return Promise.reject(err)
+});
+
+export default instance
+```
+
+/src/request下新建api.ts：
+
+```ts
+// 统一管理项目中所有的请求路径 api
+import request from "./index"
+
+// 验证码请求
+export const captchaAPI = () => request.get("/prod-api/captchaImage");
+```
+
+修改Login/index.tsx：
+
+```tsx
+// ...
+import { captchaAPI } from "@/request/api"
+
+const view = () => {
+  // ...
+  
+  // 点击验证码图片盒子的事件函数
+  const getCaptchImg = () => {
+    // 做验证码的请求
+    captchaAPI().then((res) => {
+      console.log(res);
+    })
+  }
+  
+  return (
+  	// ...
+    {/* 验证码盒子 */}
+    <div className="captchBox">
+      <Input placeholder="验证码" onChange={captchChange} />
+      <div className="captchImg" onClick={getCaptchImg}>
+        <img height="38" src="" alt="" />
+      </div>
+    </div> 
+  )
+}
 ```
 
