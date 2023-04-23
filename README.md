@@ -1716,3 +1716,26 @@ let reducer = (state = {...handleNum.state}, action: {type: string, val: number}
 // ...
 ```
 
+
+
+#### 方法名对象acitonNames的自动生成
+
+修改/store/NumStatus/index.ts：
+
+```ts
+const store = {
+  // ...
+  actionNames: {}
+}
+
+// 我们现在想做到actionNames自动生成，不用每一次添加一个方法，都要在actionNames手动添加键值对，这样很麻烦
+let actionNames = {}
+// actionNames有多少对键值对，取决于里面有多少个函数。所以遍历store.actions，给actionNames添加键值对
+for (let key in store.actions) {
+  actionNames[key] = key;
+}
+store.actionNames = actionNames;
+
+export default store
+```
+
