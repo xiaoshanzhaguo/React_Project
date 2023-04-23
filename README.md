@@ -1804,3 +1804,59 @@ const reducers = combineReducers({
 // ...
 ```
 
+
+
+## 17. redux-thunk
+
+### 17.1 仓库文件store的改造（为了异步）
+
+在store/NumStatus/index.ts中做异步操作：
+
+```ts
+add1(newState: {num: number}, action: {type: string}) {
+  // newState.num++;
+  // 会有bug 没有办法达到延迟和修改的效果
+  setTimeout(() => {
+    newState.num++;
+  }, 1000)
+}
+```
+
+会发现这种写法其实达不到想要的异步效果，需要通过redux相关的异步方案来解决（市面上有redux-saga，redux-thunk），这里我们使用redux-thunk来做。
+
+redux-thunk相比于redux-saga，体积小，灵活，但需要自己手动抽取和封装，但学习成本较低。
+
+项目目录下安装redux-thunk：
+
+```bash
+npm i redux-thunk
+```
+
+在store/index.ts中：
+
+```ts
+import { createStore, combineReducers, compose, applyMiddleware } from "redux"
+import reduxThunk from "redux-thunk"
+// ...
+
+// ...
+
+// 判断有没有__REDUX_DEVTOOLS_EXTENSION_COMPOSE__这个模块
+let composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}):compose //rt
+
+// 把仓库数据，浏览器redux-dev-tools，还有reduxThunk插件(中间件)关联在store中
+const store = createStore(reducers,composeEnhancers(applyMiddleware(reduxThunk))); 
+
+export default store
+```
+
+REDUX_DEVTOOLS_EXTENSION_COMPOSE报红，因此需要去types/store.d.ts下声明：
+
+```ts
+// ...
+interface Window {
+  __REDUX_DEVTOOLS_EXTENSION__: funciton;
+  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: function;
+}
+```
+

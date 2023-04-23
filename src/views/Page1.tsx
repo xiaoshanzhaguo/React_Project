@@ -13,7 +13,11 @@ const View = () => {
   const changeNum = () => {
     // dispatch({type: "字符串（认为是一个记号）", value: 3})  type是固定的，而value是自定义的
     // dispatch({type: "add1"})
-    dispatch({ type: 'add2', val: 10 });
+    dispatch({ type: 'add3', val: 100 });
+  }
+
+  const changeNum2 = () => {
+    dispatch({ type: 'add1'});
   }
 
   // 对sarr的操作
@@ -29,7 +33,8 @@ const View = () => {
     <div className="page1">
       <p>这是Page1页面内容</p>
       <p>{num}</p>
-      <button onClick={changeNum}>按钮</button>
+      <button onClick={changeNum}>同步按钮</button>
+      <button onClick={changeNum2}>异步按钮</button>
 
       <p>{sarr}</p>
       <button onClick={changeArr}>按钮</button>
