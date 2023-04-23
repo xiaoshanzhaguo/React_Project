@@ -2044,3 +2044,48 @@ const view = () => {
 }
 ```
 
+
+
+### 18.2 修改成async+await写法
+
+新建/types/api.d.ts：
+
+需要安装一个插件 `JSON To TS` ，可以将复制过来的JSON生成对应的TS格式。
+
+```ts
+// 这个文件专门定义请求参数的类型，和响应的类型
+
+interface CaptchAPIRes {
+  msg: string,
+  img: string,
+  code: number,
+  captchEnabled: boolean,
+  uuid: string;
+}
+```
+
+修改Login/index.tsx：
+
+```tsx
+// ...
+import { CaptchaAPI } from "@/request/api"
+
+const view = () => {
+  // ...
+  
+	// 点击验证码图片盒子的事件函数
+  const getCaptchImg = async () => {
+    // 做验证码的请求
+    // CaptchaAPI().then((res) => {
+    //   console.log(res);
+    // })
+    let aptchaAPIRes = await CaptchaAPI();
+    console.log(aptchaAPIRes);
+  }
+  
+  // ...
+}
+
+export default view
+```
+

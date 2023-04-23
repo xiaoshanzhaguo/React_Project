@@ -5,7 +5,7 @@ import initLoginBg from "./init"
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import './login.less'
 
-import { captchaAPI } from "@/request/api"
+import { CaptchaAPI } from "@/request/api"
 
 const view = () => {
   // 加载完组件后，加载背景
@@ -36,11 +36,13 @@ const view = () => {
   }
 
   // 点击验证码图片盒子的事件函数
-  const getCaptchImg = () => {
+  const getCaptchImg = async () => {
     // 做验证码的请求
-    captchaAPI().then((res) => {
-      console.log(res);
-    })
+    // CaptchaAPI().then((res) => {
+    //   console.log(res);
+    // })
+    let aptchaAPIRes = await CaptchaAPI();
+    console.log(aptchaAPIRes);
   }
 
   return (
