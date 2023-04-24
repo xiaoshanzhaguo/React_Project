@@ -1,10 +1,27 @@
 // 这个文件专门定义请求参数的类型，和响应的类型
 
+import { LoginAPI } from "@/request/api";
+
 // 验证码的响应类型约束
-interface CaptchAPIRes {
+interface CaptchaAPIRes {
   msg: string,
   img: string,
   code: number,
   captchEnabled: boolean,
   uuid: string;
+}
+
+// 登录请求的参数类型约束
+interface LoginAPIReq {
+  username: string,
+  password: string,
+  code: string,
+  uuid: string;
+}
+
+// 登录的响应类型约束
+interface LoginAPIRes {
+  msg: string,
+  code: number,
+  token: string;
 }

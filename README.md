@@ -2024,7 +2024,7 @@ const view = () => {
   // ...
   
   // 点击验证码图片盒子的事件函数
-  const getCaptchImg = () => {
+  const getCaptchaImg = () => {
     // 做验证码的请求
     captchaAPI().then((res) => {
       console.log(res);
@@ -2034,9 +2034,9 @@ const view = () => {
   return (
   	// ...
     {/* 验证码盒子 */}
-    <div className="captchBox">
-      <Input placeholder="验证码" onChange={captchChange} />
-      <div className="captchImg" onClick={getCaptchImg}>
+    <div className="captchaBox">
+      <Input placeholder="验证码" onChange={captchaChange} />
+      <div className="captchImg" onClick={getCaptchaImg}>
         <img height="38" src="" alt="" />
       </div>
     </div> 
@@ -2057,7 +2057,7 @@ const view = () => {
 ```ts
 // 这个文件专门定义请求参数的类型，和响应的类型
 
-interface CaptchAPIRes {
+interface CaptchaAPIRes {
   msg: string,
   img: string,
   code: number,
@@ -2076,13 +2076,13 @@ const view = () => {
   // ...
   
 	// 点击验证码图片盒子的事件函数
-  const getCaptchImg = async () => {
+  const getCaptchaImg = async () => {
     // 做验证码的请求
     // CaptchaAPI().then((res) => {
     //   console.log(res);
     // })
-    let aptchaAPIRes = await CaptchaAPI();
-    console.log(aptchaAPIRes);
+    let captchaAPIRes = await CaptchaAPI();
+    console.log(captchaAPIRes);
   }
   
   // ...
@@ -2104,7 +2104,7 @@ import request from "./index"
 // 请求中，请求的参数和返回值的类型，都需要进行约束
 
 // 验证码请求
-export const CaptchaAPI = ():Promise<CaptchAPIRes> => request.get("/prod-api/captchaImage");
+export const CaptchaAPI = ():Promise<CaptchaAPIRes> => request.get("/prod-api/captchaImage");
 ```
 
 修改src/types/api.d.ts：
@@ -2113,7 +2113,7 @@ export const CaptchaAPI = ():Promise<CaptchAPIRes> => request.get("/prod-api/cap
 // 这个文件专门定义请求参数的类型，和响应的类型
 
 // 验证码的响应类型约束
-interface CaptchAPIRes {
+interface CaptchaAPIRes {
   msg: string,
   img: string,
   code: number,
@@ -2167,13 +2167,47 @@ const view = () => {
   return (
   	...
     {/* 验证码盒子 */}
-    <div className="captchBox">
+    <div className="captchaBox">
       <Input placeholder="验证码" onChange={captchaChange} />
       <div className="captchImg" onClick={getCaptchaImg}>
         <img height="38" src={capthcaImg} alt="" />
       </div>
     </div>
   )
+}
+```
+
+
+
+### 18.5 登录API和类型约束的书写
+
+修改src/request/api.ts：
+
+```ts
+// ...
+
+// 登录请求
+export const LoginAPI = (params):Promise<LoginAPIReq> =>  request.get("/prod-api/login", params);
+```
+
+修改src/types/api.d.ts：
+
+```ts
+// ...
+
+// 登录请求的参数类型约束
+interface LoginAPIReq {
+  username: string,
+  password: string,
+  code: string,
+  uuid: string;
+}
+
+// 登录的响应类型约束
+interface LoginAPIRes {
+  msg: string,
+  code: number,
+  token: string;
 }
 ```
 

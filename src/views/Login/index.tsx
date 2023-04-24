@@ -75,7 +75,7 @@ const view = () => {
             <Input placeholder="用户名" onChange={usernameChange} />
             <Input.Password placeholder="密码" onChange={passwordChange} />
             {/* 验证码盒子 */}
-            <div className="captchBox">
+            <div className="captchaBox">
               <Input placeholder="验证码" onChange={captchaChange} />
               <div className="captchImg" onClick={getCaptchaImg}>
                 <img height="38" src={capthcaImg} alt="" />
