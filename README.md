@@ -2123,3 +2123,57 @@ interface CaptchAPIRes {
 ```
 
 而在Login/index.tsx中，鼠标悬浮 `aptchaAPIRes`时，会提示类型为`CaptchAPIRes`，因此不要再添加类型。
+
+
+
+### 18.4 完成验证码的业务逻辑
+
+修改Login/index.tsx：
+
+```tsx
+// ...
+const view = () => {
+  // 加载完组件后，加载背景
+  useEffect(() => {
+    initLoginBg();
+    window.onresize = function () { initLoginBg() };
+   	// 获取验证码图片
+    getCaptchaImg();
+  }, []);
+  
+  // ...
+  
+   // 定义一个变量保存验证码图片信息
+  const [capthcaImg, setCaptchaImg] = useState("");
+  
+  // ...
+  
+  // 点击验证码图片盒子的事件函数
+  const getCaptchaImg = async () => {
+    // 做验证码的请求
+    // CaptchaAPI().then((res) => {
+    //   console.log(res);
+    // })
+    let captchaAPIRes = await CaptchaAPI();
+    // console.log(captchaAPIRes);
+    if (captchaAPIRes.code === 200) {
+      // 1. 把图片的数据显示在img上面
+      setCaptchaImg("data:img/gif;base64," + captchaAPIRes.img);
+      // 2. 本地保存uuid，给登录的时候用
+      localStorage.setItem("uuid", captchaAPIRes.uuid);
+    }
+  }
+  
+  return (
+  	...
+    {/* 验证码盒子 */}
+    <div className="captchBox">
+      <Input placeholder="验证码" onChange={captchaChange} />
+      <div className="captchImg" onClick={getCaptchaImg}>
+        <img height="38" src={capthcaImg} alt="" />
+      </div>
+    </div>
+  )
+}
+```
+

@@ -12,11 +12,18 @@ const view = () => {
   useEffect(() => {
     initLoginBg();
     window.onresize = function () { initLoginBg() };
+    // 获取验证码图片 
+    getCaptchaImg();
   }, []);
   // 获取用户输入的信息
   const [usernameVal, setUsernameVal] = useState("");  // 定义用户输入用户名这个变量
   const [passwordVal, setPasswordVal] = useState("");  // 定义用户输入密码这个变量
-  const [captchVal, setCaptchVal] = useState("");  // 定义用户输入验证码这个变量
+  const [captchaVal, setCaptchaVal] = useState("");  // 定义用户输入验证码这个变量
+
+  // 定义一个变量保存验证码图片信息
+  const [capthcaImg, setCaptchaImg] = useState("");
+
+
   const usernameChange = (e: ChangeEvent<HTMLInputElement>) => {
     // 获取用户输入的用户名
     // console.log(e.target.value);
@@ -27,22 +34,28 @@ const view = () => {
   const passwordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPasswordVal(e.target.value);
   }
-  const captchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCaptchVal(e.target.value);
+  const captchaChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setCaptchaVal(e.target.value);
   }
   // 点击登录按钮的事件函数
   const gotoLogin = () => {
-    console.log('用户输入的用户名，密码，验证码分别是：', usernameVal, passwordVal, captchVal);
+    console.log('用户输入的用户名，密码，验证码分别是：', usernameVal, passwordVal, captchaVal);
   }
 
   // 点击验证码图片盒子的事件函数
-  const getCaptchImg = async () => {
+  const getCaptchaImg = async () => {
     // 做验证码的请求
     // CaptchaAPI().then((res) => {
     //   console.log(res);
     // })
-    let aptchaAPIRes = await CaptchaAPI();
-    console.log(aptchaAPIRes);
+    let captchaAPIRes = await CaptchaAPI();
+    // console.log(captchaAPIRes);
+    if (captchaAPIRes.code === 200) {
+      // 1. 把图片的数据显示在img上面
+      setCaptchaImg("data:img/gif;base64," + captchaAPIRes.img);
+      // 2. 本地保存uuid，给登录的时候用
+      localStorage.setItem("uuid", captchaAPIRes.uuid);
+    }
   }
 
   return (
@@ -63,9 +76,9 @@ const view = () => {
             <Input.Password placeholder="密码" onChange={passwordChange} />
             {/* 验证码盒子 */}
             <div className="captchBox">
-              <Input placeholder="验证码" onChange={captchChange} />
-              <div className="captchImg" onClick={getCaptchImg}>
-                <img height="38" src="" alt="" />
+              <Input placeholder="验证码" onChange={captchaChange} />
+              <div className="captchImg" onClick={getCaptchaImg}>
+                <img height="38" src={capthcaImg} alt="" />
               </div>
             </div>
             <Button type="primary" className="loginBtn" block onClick={gotoLogin}>
