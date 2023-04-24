@@ -2323,3 +2323,77 @@ fuction App() {
 export default App
 ```
 
+
+
+### 19.2 业务实现
+
+修改App.tsx：
+
+```tsx
+import { useEffect } from 'react'
+import { useRoutes, useLocation, useNavigate } from 'react-router-dom'
+import router from "./router"
+import { message } from "antd"
+
+// 去往登录页的组件
+function ToLogin() {
+  const navigateTo = useNavigate();
+  // 加载完这个组件之后，实现跳转  生命周期函数
+  useEffect(() => {
+    // 加载完组件之后，执行这里的代码
+    navigateTo('/login');
+    message.warning("您还没有登录，请登录后再访问！");
+  }, []);  // 给一个空的数组，函数里的内容就代表加载完后的处理
+  return <div></div>
+}
+
+// 去往首页的组件
+function ToPage1() {
+  const navigateTo = useNavigate();
+  // 加载完这个组件之后，实现跳转  生命周期函数
+  useEffect(() => {
+    // 加载完组件之后，执行这里的代码
+    navigateTo('/page1');
+    message.warning("您已经登录过了！");
+  }, []);  // 给一个空的数组，函数里的内容就代表加载完后的处理
+  return <div></div>
+}
+
+// 手写封装前置路由守卫
+function BeforeRouterEnter() {
+  // 换成Hook形式的对象
+  const outlet = useRoutes(router);
+
+  /*
+    后台管理系统，两种经典的调整情况:
+    1. 如果访问的是登录页面，并且有token，跳转到首页
+    2. 如果访问的不是登录页面，并且没有token，跳转到登录页面
+    3. 其余的都可以正常放行
+  */
+  const location = useLocation();
+  let token = localStorage.getItem("lege-react-management-token");
+  // 1. 如果访问的是登录页面，并且有token，跳转到首页
+  if (location.pathname === "/login" && token) {
+    // 这里不能直接用 useNavigate 来实现跳转，因为需要BeforeRouterEnter是一个正常的JSX组件
+    return <ToPage1 />
+  }
+  // 2. 如果访问的不是登录页面，并且没有token，跳转到登录页面
+  if (location.pathname !== "/login" && !token) {
+    return <ToLogin />
+  }
+
+  return outlet;
+}
+
+function App() {
+
+  return (
+    <div className="App">
+      <BeforeRouterEnter />
+    </div>
+  )
+}
+
+export default App
+```
+
