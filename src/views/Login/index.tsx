@@ -1,13 +1,16 @@
 import { ChangeEvent, useEffect, useState } from "react"
-import { Input, Space, Button } from "antd"
+import { Input, Space, Button, message } from "antd"
 import styles from "./login.module.scss"
 import initLoginBg from "./init"
 import 'antd/dist/antd.css' // or 'antd/dist/antd.less'
 import './login.less'
+import { useNavigate } from "react-router-dom"
 
 import { CaptchaAPI } from "@/request/api"
+import { LoginAPI } from "@/request/api";
 
 const view = () => {
+  let navigetTo = useNavigate();
   // 加载完组件后，加载背景
   useEffect(() => {
     initLoginBg();
@@ -38,8 +41,32 @@ const view = () => {
     setCaptchaVal(e.target.value);
   }
   // 点击登录按钮的事件函数
-  const gotoLogin = () => {
-    console.log('用户输入的用户名，密码，验证码分别是：', usernameVal, passwordVal, captchaVal);
+  const gotoLogin = async () => {
+    // console.log('用户输入的用户名，密码，验证码分别是：', usernameVal, passwordVal, captchaVal);
+    // 验证是否有空值
+    if (!usernameVal.trim() || !passwordVal.trim() || !captchaVal.trim()) {
+      message.warning("请完整输入信息！");
+      return;
+    }
+    // 验证验证码是否正确是后端负责的，如果前端真的要验证，那就验证验证码长度
+    // 发起登录请求
+    let loginAPIRes = await LoginAPI({
+      username: usernameVal,
+      password: passwordVal,
+      code: captchaVal,
+      uuid: localStorage.getItem("uuid") as string  // 断言
+    })
+    // console.log(loginAPIRes);
+    if (loginAPIRes.code === 200) {
+      // 1. 提示登录成功
+      message.success("登录成功");
+      // 2. 保存token
+      localStorage.setItem("lege-management-token", loginAPIRes.token);
+      // 3. 调转到Page1
+      navigetTo("/page1");
+      // 4. 删除本地保存的uuid
+      localStorage.removeItem("uuid");
+    }
   }
 
   // 点击验证码图片盒子的事件函数
@@ -77,7 +104,7 @@ const view = () => {
             {/* 验证码盒子 */}
             <div className="captchaBox">
               <Input placeholder="验证码" onChange={captchaChange} />
-              <div className="captchImg" onClick={getCaptchaImg}>
+              <div className="captchaImg" onClick={getCaptchaImg}>
                 <img height="38" src={capthcaImg} alt="" />
               </div>
             </div>

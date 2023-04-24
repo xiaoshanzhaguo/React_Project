@@ -1,7 +1,5 @@
 // 这个文件专门定义请求参数的类型，和响应的类型
 
-import { LoginAPI } from "@/request/api";
-
 // 验证码的响应类型约束
 interface CaptchaAPIRes {
   msg: string,

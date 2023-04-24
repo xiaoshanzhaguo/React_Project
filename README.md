@@ -2211,3 +2211,53 @@ interface LoginAPIRes {
 }
 ```
 
+
+
+### 18.6 登录的业务逻辑的处理
+
+修改Login/index.tsx：
+
+找到UI组件库的提示框。
+
+```tsx
+import { Input, Space, Button, message } from "antd"
+import { useNavigate } from "react-router-dom"
+import { LoginAPI } from "@/request/api";
+// ...
+
+const view = () => {
+  let navigetTo = useNavigate();
+  // ...
+  
+  // 点击登录按钮的事件函数
+  const gotoLogin = async () => {
+    // console.log('用户输入的用户名，密码，验证码分别是：', usernameVal, passwordVal, captchaVal);
+    // 验证是否有空值
+    if (!usernameVal.trim() || !passwordVal.trim() || !captchaVal.trim()) {
+      message.warning("请完整输入信息！");
+      return;
+    }
+    // 验证验证码是否正确是后端负责的，如果前端真的要验证，那就验证验证码长度
+    // 发起登录请求
+    let loginAPIRes = await LoginAPI({
+      username: usernameVal,
+      password: passwordVal,
+      code: captchaVal,
+      uuid: localStorage.getItem("uuid") as string  // 断言
+    })
+    // console.log(loginAPIRes);
+    if (loginAPIRes.code === 200) {
+      // 1. 提示登录成功
+      message.success("登录成功");
+      // 2. 保存token
+      localStorage.setItem("lege-management-token", loginAPIRes.token);
+      // 3. 调转到Page1
+      navigetTo("/page1");
+      // 4. 删除本地保存的uuid
+      localStorage.removeItem("uuid");
+    }
+  }
+}
+```
+
+之前request/api.ts中LoginAPI写成get请求了，需要改成post请求。
