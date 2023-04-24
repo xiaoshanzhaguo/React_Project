@@ -2052,6 +2052,8 @@ const view = () => {
 
 需要安装一个插件 `JSON To TS` ，可以将复制过来的JSON生成对应的TS格式。
 
+`Ctrl+Shift+Alt+v` 即可生成。
+
 ```ts
 // 这个文件专门定义请求参数的类型，和响应的类型
 
@@ -2089,3 +2091,35 @@ const view = () => {
 export default view
 ```
 
+
+
+### 18.3 规范化请求中的TypeScript的书写
+
+修改src/request/api.ts：
+
+```ts
+// 统一管理项目中所有的请求路径 api
+import request from "./index"
+
+// 请求中，请求的参数和返回值的类型，都需要进行约束
+
+// 验证码请求
+export const CaptchaAPI = ():Promise<CaptchAPIRes> => request.get("/prod-api/captchaImage");
+```
+
+修改src/types/api.d.ts：
+
+```ts
+// 这个文件专门定义请求参数的类型，和响应的类型
+
+// 验证码的响应类型约束
+interface CaptchAPIRes {
+  msg: string,
+  img: string,
+  code: number,
+  captchEnabled: boolean,
+  uuid: string;
+}
+```
+
+而在Login/index.tsx中，鼠标悬浮 `aptchaAPIRes`时，会提示类型为`CaptchAPIRes`，因此不要再添加类型。
