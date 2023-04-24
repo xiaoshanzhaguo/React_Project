@@ -2261,3 +2261,65 @@ const view = () => {
 ```
 
 之前request/api.ts中LoginAPI写成get请求了，需要改成post请求。
+
+
+
+
+
+## 19.手写封装前置路由守卫
+
+### 19.1 思路分析和结构的初步实现
+
+修改App.tsx：
+
+```tsx
+// ...
+
+// 去往登录页的组件
+function ToLogin() {
+
+}
+
+// 去往首页的组件
+function ToPage1() {
+
+}
+
+function BeforeRouterEnter() {
+  // 换成Hook形式的对象
+  const outlet = useRoutes(router);
+
+  /*
+    后台管理系统，两种经典的调整情况:
+    1. 如果访问的是登录页面，并且有token，跳转到首页
+    2. 如果访问的不是登录页面，并且没有token，跳转到登录页面
+    3. 其余的都可以正常放行
+  */
+  let token = localStorage.getItem("lege-react-management-token");
+  // 1. 如果访问的是登录页面，并且有token，跳转到首页
+  if (访问地址 === "/login" && token) {
+    // 这里不能直接用 useNavigate 来实现跳转，因为需要BeforeRouterEnter是一个正常的JSX组件
+    return <ToPage1 />
+  }
+  // 2. 如果访问的不是登录页面，并且没有token，跳转到登录页面
+  if (访问地址 !== "/login" && !token) {
+    return <ToLogin />
+  }
+  
+  return outlet;
+}
+
+fuction App() {
+  const [count, setCount] = useState(0);
+  
+  return (
+    <div className="App">
+      {/* {outlet} */}
+      <BeforeRouterEnter />
+    </div>
+  )
+}
+
+export default App
+```
+

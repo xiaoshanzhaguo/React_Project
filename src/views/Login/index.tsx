@@ -61,7 +61,7 @@ const view = () => {
       // 1. 提示登录成功
       message.success("登录成功");
       // 2. 保存token
-      localStorage.setItem("lege-management-token", loginAPIRes.token);
+      localStorage.setItem("lege-react-management-token", loginAPIRes.token);
       // 3. 调转到Page1
       navigetTo("/page1");
       // 4. 删除本地保存的uuid

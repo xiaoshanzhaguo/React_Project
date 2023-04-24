@@ -6,10 +6,44 @@ import { useState } from 'react'
 import { useRoutes, Link } from 'react-router-dom'
 import router from "./router"
 
-function App() {
-  const [count, setCount] = useState(0)
+// 去往登录页的组件
+function ToLogin() {
+
+}
+
+// 去往首页的组件
+function ToPage1() {
+
+}
+
+function BeforeRouterEnter() {
   // 换成Hook形式的对象
-  const outlet = useRoutes(router)
+  const outlet = useRoutes(router);
+
+  /*
+    后台管理系统，两种经典的调整情况:
+    1. 如果访问的是登录页面，并且有token，跳转到首页
+    2. 如果访问的不是登录页面，并且没有token，跳转到登录页面
+    3. 其余的都可以正常放行
+  */
+  let token = localStorage.getItem("lege-react-management-token");
+  // 1. 如果访问的是登录页面，并且有token，跳转到首页
+  if (访问地址 === "/login" && token) {
+    // 这里不能直接用 useNavigate 来实现跳转，因为需要BeforeRouterEnter是一个正常的JSX组件
+    return <ToPage1 />
+  }
+  // 2. 如果访问的不是登录页面，并且没有token，跳转到登录页面
+  if (访问地址 !== "/login" && !token) {
+    return <ToLogin />
+  }
+  
+  return outlet;
+}
+
+function App() {
+  const [count, setCount] = useState(0);
+  // 换成Hook形式的对象
+  // const outlet = useRoutes(router)
 
   return (
     <div className="App">
@@ -20,7 +54,8 @@ function App() {
       {/* 占位符组件，类似于窗口，用来展示组件的，有点像Vue中的 router-view */}
       {/* <Outlet></Outlet> */}
 
-      {outlet}
+      {/* {outlet} */}
+      <BeforeRouterEnter />
     </div>
   )
 }
